@@ -2,14 +2,33 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AR Experience</title>
+  <title>مشروع الكتاب التفاعلي - WebAR</title>
+  <!-- مكتبة A-Frame الأساسية -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <!-- مكتبة MindAR المستقرة للتعرف على الصور -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
-<body>
-  <a-scene embedded vr-mode-ui="enabled: false">
-    <a-camera position="0 1.6 3"></a-camera>
-    <a-box position="0 1.6 -1" rotation="0 45 45" material="color: red;" scale="0.8 0.8 0.8"></a-box>
-    <a-light type="ambient" color="#FFF"></a-light>
+<body style="margin: 0; overflow: hidden;">
+  <a-scene 
+    mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/examples/image-tracking/assets/card-example/card.mind;" 
+    color-space="sRGB" 
+    renderer="colorManagement: true, physicallyCorrectLights" 
+    vr-mode-ui="enabled: false" 
+    device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <!-- هنا يمكنك مستقبلاً إضافة مجسمات ثلاثية الأبعاد لخريطة أو مبنى متعلق بالكتاب -->
+    </a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+        <!-- العنصر التفاعلي المعزز الذي سيظهر عند التعرف على غلاف/هدف الكتاب -->
+    <a-entity mindar-image-target="targetIndex: 0">
+      
+      <!-- مجسم مكعب أحمر بارز وتفاعلي مع إضاءة ونصوص توضيحية -->
+      <a-box position="0 0.2 0.1" rotation="0 45 45" scale="0.5 0.5 0.5" material="color: #e74c3c; roughness: 0.3; metalness: 0.2;"></a-box>
+      
+      <!-- نص تعريفي تفاعلي يظهر فوق المجسم يخدم فكرة الكتاب -->
+      <a-text value="الكتاب التفاعلي" position="0 0.7 0.1" align="center" color="#ffffff" width="3"></a-text>
+      <a-sphere position="0 -0.2 0.1" radius="0.15" material="color: #3498db;"></a-sphere>
+    </a-entity>
   </a-scene>
 </body>
 </html>
