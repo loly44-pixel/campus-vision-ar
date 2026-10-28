@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>الكتاب التفاعلي - WebAR</title>
+  <title>الكتاب التفاعلي التلامسي - WebAR</title>
   
   <!-- مكتبات A-Frame و MindAR -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
@@ -13,35 +13,6 @@
       margin: 0;
       overflow: hidden;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    /* واجهة التحكم التفاعلية على شاشة الجوال */
-    #ui-container {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 999;
-      width: 85%;
-      max-width: 350px;
-      text-align: center;
-    }    .action-btn {
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #ffffff;
-      border: none;
-      padding: 16px 24px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 50px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.2s ease;
-      outline: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .action-btn:active {
-      transform: scale(0.95);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     }
     #scan-hint {
       position: fixed;
@@ -58,15 +29,13 @@
       border: 1px solid #38bdf8;
       backdrop-filter: blur(5px);
       text-align: center;
+      pointer-events: none;
     }
   </style>
 </head>
-<body>  <!-- تلميح أعلى الشاشة -->
-  <div id="scan-hint">🔍 وجه الكاميرا نحو صورة الكتاب</div>
-  <!-- زر التحكم بالضغط أسفل الشاشة -->
-  <div id="ui-container">
-    <button class="action-btn" id="next-btn" onclick="nextInfo()">اضغط لعرض التفاصيل 👇</button>
-  </div>
+<body>
+  <!-- تلميح أعلى الشاشة -->
+  <div id="scan-hint">👆 اضغط على الأزرار المختلفة في البطاقة للتعرف على محتويات الكتاب</div>
   <!-- مشهد الواقع المعزز AR -->
   <a-scene 
     mindar-image="imageTargetSrc: https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/image-tracking/assets/card-example/card.mind; uiLoading: no;" 
@@ -77,51 +46,37 @@
     cursor="rayOrigin: mouse"
     raycaster="objects: .clickable">
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <!-- مجسمات الواقع المعزز التي تظهر عند التعرف على الصورة -->
+    <!-- العنصر التفاعلي المرتبط بالصورة -->
     <a-entity mindar-image-target="targetIndex: 0">
       
-      <!-- اللوحة الخلفية الاحترافية -->
-      <a-plane position="0 0 0" width="1.3" height="0.9" material="color: #0f172a; opacity: 0.92; transparent: true;"></a-plane>
-      <a-plane position="0 0 -0.01" width="1.34" height="0.94" material="color: #38bdf8;"></a-plane>
-      <!-- العنوان الرئيسي -->
-      <a-text value="Interactive Book" position="0 0.32 0.02" align="center" color="#38bdf8" width="3" font="kelsonsans"></a-text>
-      <a-plane position="0 0.25 0.02" width="1.1" height="0.01" material="color: #38bdf8;"></a-plane>
-      <!-- عنوان الخانة الحالية -->
-      <a-text id="ar-label" value="Author" position="0 0.12 0.02" align="center" color="#f59e0b" width="2.8" font="kelsonsans"></a-text>
-      <!-- القيمة المعروضة (المعلومة) -->
-      <a-text id="ar-value" value="Team Project" position="0 -0.05 0.02" align="center" color="#ffffff" width="2.4" font="kelsonsans"></a-text>
-      <!-- زر تفاعلي داخل الـ AR أيضاً -->
-      <a-box id="ar-button" class="clickable" position="0 -0.28 0.05" width="0.9" height="0.14" depth="0.02" material="color: #22c55e;" onclick="nextInfo()">
-<a-text value="NEXT INFO >" position="0 0 0.02" align="center" color="#ffffff" width="2" font="kelsonsans"></a-text>
+      <!-- اللوحة الخلفية الأساسية -->
+      <a-plane position="0 0 0" width="1.3" height="0.85" material="color: #0f172a; opacity: 0.9; transparent: true;"></a-plane>
+      <a-plane position="0 0 -0.01" width="1.34" height="0.89" material="color: #38bdf8;"></a-plane>
+      <!-- اللوحة الرئيسية لعرض المعلومات المحددة -->
+      <a-text id="display-title" value="اختر قسماً من الغلاف" position="0 0.25 0.02" align="center" color="#38bdf8" width="3" font="kelsonsans"></a-text>
+      <a-text id="display-desc" value="اضغط على الأزرار أدناه لتظهر التفاصيل هنا" position="0 0.05 0.02" align="center" color="#ffffff" width="2.4" font="kelsonsans"></a-text>
+      <!-- 1. زر المنتصف: اسم المؤلف -->
+      <a-box class="clickable" position="0 -0.22 0.03" width="0.35" height="0.12" depth="0.02" material="color: #f59e0b;" onclick="showInfo('المؤلف', 'اسم المؤلف: فريق المشروع التعليمي المميز')">
+        <a-text value="المؤلف" position="0 0 0.02" align="center" color="#ffffff" width="1.5" font="kelsonsans"></a-text>
       </a-box>
-
+      <!-- 2. زر اليمين: عدد الصفحات -->
+      <a-box class="clickable" position="0.4 -0.22 0.03" width="0.35" height="0.12" depth="0.02" material="color: #22c55e;" onclick="showInfo('عدد الصفحات', 'يحتوي الكتاب على 150 صفحة تفاعلية')">
+        <a-text value="الصفحات" position="0 0 0.02" align="center" color="#ffffff" width="1.5" font="kelsonsans"></a-text>
+      </a-box>
+      <!-- 3. زر اليسار: الفصول -->
+      <a-box class="clickable" position="-0.4 -0.22 0.03" width="0.35" height="0.12" depth="0.02" material="color: #ec4899;" onclick="showInfo('الفصول', 'يتكون الكتاب من 5 فصول رئيسية مشوقة')">
+        <a-text value="الفصول" position="0 0 0.02" align="center" color="#ffffff" width="1.5" font="kelsonsans"></a-text>
+      </a-box>
     </a-entity>
   </a-scene>
   <script>
-    // قائمة المعلومات الخاصة بالكتاب
-    const bookData = [
-      { label: "Author", value: "Team Project" },
-      { label: "Pages", value: "150 Pages" },
-      { label: "Chapters", value: "5 Interactive Chapters" },
-      { label: "Summary", value: "Comprehensive WebAR Guide" }
-    ];
-    let currentIndex = 0;
-
-    // دالة التبديل بين المعلومات
-    function nextInfo() {
-      currentIndex = (currentIndex + 1) % bookData.length;
-      
-      const labelEl = document.getElementById('ar-label');
-      const valueEl = document.getElementById('ar-value');
-      const btnEl = document.getElementById('ar-button');
-      // تحديث النصوص
-      labelEl.setAttribute('value', bookData[currentIndex].label);
-      valueEl.setAttribute('value', bookData[currentIndex].value);
-      // تأثير حركة بسيطة للزر في الـ AR عند الضغط
-      btnEl.setAttribute('scale', '0.9 0.9 0.9');
-      setTimeout(() => {
-        btnEl.setAttribute('scale', '1 1 1');
-      }, 150);
+    // دالة لتغيير النصوص بناءً على الزر المختار في AR
+function showInfo(title, desc) {
+      const titleEl = document.getElementById('display-title');
+      const descEl = document.getElementById('display-desc');
+      titleEl.setAttribute('value', title);
+      titleEl.setAttribute('color', '#f59e0b');
+      descEl.setAttribute('value', desc);
     }
   </script>
 </body>
