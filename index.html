@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Python Crash Course - AR Project</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
     body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
     .info-panel {
@@ -21,39 +21,50 @@
     }
   </style>
 </head>
-<a-assets>
-  <img id="icon-basics" src="https://cdn-icons-png.flaticon.com/512/3073/3073696.png">
-  <img id="icon-projects" src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png">
-  <img id="icon-resources" src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png">
-</a-assets>
+<body>  <div id="info-panel" class="info-panel">
+    <h3 id="panel-title">قسم الكتاب</h3>
+    <p id="panel-text">تفاصيل الفصل هنا...</p>
+    <button class="close-btn" onclick="closeInfo()">إغلاق</button>
+  </div>
+  <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
+    
+    <a-assets>
+      <img id="icon-basics" src="https://cdn-icons-png.flaticon.com/512/3073/3073696.png">
+      <img id="icon-projects" src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png">
+      <img id="icon-resources" src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png">
+    </a-assets>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-image 
+        src="#icon-basics" 
+        position="-0.6 0 0" 
+        height="0.4" width="0.4" 
+        class="clickable"
+        onclick="showInfo('أساسيات بايثون', 'يتناول هذا القسم المتغيرات، الأنواع البانية، الجمل الشرطية، والدوال الأساسية.')"
+        animation="property: position; to: -0.6 0.1 0; dir: alternate; dur: 1000; loop: true">
+      </a-image>
+      <a-image 
+        src="#icon-resources" 
+        position="0.6 0 0" 
+        height="0.4" width="0.4" 
+        class="clickable"
+        onclick="showInfo('مصادر التعلم', 'روابط ومستودعات الشيفرات البرمجية ومراجع إضافية لمساعدة المطورين.')"
+        animation="property: position; to: 0.6 0.1 0; dir: alternate; dur: 1400; loop: true">
+      </a-image>
+    </a-entity>
+  </a-scene>
+  <script>
+    function showInfo(title, text) {
+      document.getElementById('panel-title').innerText = title;
+      document.getElementById('panel-text').innerText = text;
+      document.getElementById('info-panel').style.display = 'block';
+    }
+    function closeInfo() {
+      document.getElementById('info-panel').style.display = 'none';
+    }
+  </script>
 
-<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+</body>
+</html>
 
-<a-entity mindar-image-target="targetIndex: 0">
-  <a-image 
-    src="#icon-basics" 
-    position="-0.6 0 0" 
-    height="0.4" width="0.4" 
-    class="clickable"
-    onclick="showInfo('أساسيات بايثون', 'يتناول هذا القسم المتغيرات، الأنواع البانية، الجمل الشرطية، والدوال الأساسية.')"
-    animation="property: position; to: -0.6 0.1 0; dir: alternate; dur: 1000; loop: true">
-  </a-image>
-
-  <a-image 
-    src="#icon-projects" 
-    position="0 0 0" 
-    height="0.4" width="0.4" 
-    class="clickable"
-    onclick="showInfo('مشاريع عملية', 'مشاريع تطبيقية تشمل لعبة Alien Invasion وتطوير الويب.')"
-    animation="property: position; to: 0 0.1 0; dir: alternate; dur: 1200; loop: true">
-  </a-image>
-
-  <a-image 
-    src="#icon-resources" 
-    position="0.6 0 0" 
-    height="0.4" width="0.4" 
-    class="clickable"
-    onclick="showInfo('مصادر التعلم', 'روابط ومستودعات الشيفرات البرمجية ومراجع إضافية لمساعدة المطورين.')"
-    animation="property: position; to: 0.6 0.1 0; dir: alternate; dur: 1400; loop: true">
-  </a-image>
-</a-entity>
+  
