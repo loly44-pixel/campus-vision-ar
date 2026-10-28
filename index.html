@@ -14,8 +14,9 @@
 <body>
   <div id="hint">📱 وجه الكاميرا على صورة البطاقة باللابتوب</div>
   <a-scene 
-    mindar-image="imageTargetSrc: https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/image-tracking/assets/card-example/card.mind; uiLoading: no;" 
-    color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false">
+  
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind; uiLoading: no;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false">
+    color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false"
     
     <a-camera position="0 0 0" look-controls="enabled: false" raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse"></a-camera>
     <a-entity mindar-image-target="targetIndex: 0">
