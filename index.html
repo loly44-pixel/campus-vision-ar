@@ -1,23 +1,128 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مشروع الكتاب التفاعلي</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>الكتاب التفاعلي - WebAR</title>
+  
+  <!-- مكتبات A-Frame و MindAR -->
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    /* واجهة التحكم التفاعلية على شاشة الجوال */
+    #ui-container {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      width: 85%;
+      max-width: 350px;
+      text-align: center;
+    }    .action-btn {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #ffffff;
+      border: none;
+      padding: 16px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.2s ease;
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .action-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+    #scan-hint {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      color: #38bdf8;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 999;
+      border: 1px solid #38bdf8;
+      backdrop-filter: blur(5px);
+      text-align: center;
+    }
+  </style>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>  <!-- تلميح أعلى الشاشة -->
+  <div id="scan-hint">🔍 وجه الكاميرا نحو صورة الكتاب</div>
+  <!-- زر التحكم بالضغط أسفل الشاشة -->
+  <div id="ui-container">
+    <button class="action-btn" id="next-btn" onclick="nextInfo()">اضغط لعرض التفاصيل 👇</button>
+  </div>
+  <!-- مشهد الواقع المعزز AR -->
   <a-scene 
     mindar-image="imageTargetSrc: https://raw.githubusercontent.com/hiukim/mind-ar-js/master/examples/image-tracking/assets/card-example/card.mind; uiLoading: no;" 
     color-space="sRGB" 
     renderer="colorManagement: true, physicallyCorrectLights" 
     vr-mode-ui="enabled: false" 
-    device-orientation-permission-ui="enabled: false">
+    device-orientation-permission-ui="enabled: false"
+    cursor="rayOrigin: mouse"
+    raycaster="objects: .clickable">
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <!-- مجسمات الواقع المعزز التي تظهر عند التعرف على الصورة -->
     <a-entity mindar-image-target="targetIndex: 0">
-      <a-box position="0 0.2 0.1" rotation="0 45 45" scale="0.5 0.5 0.5" material="color: #e74c3c;"></a-box>
-      <a-text value="الكتاب التفاعلي" position="0 0.7 0.1" align="center" color="#ffffff" width="3"></a-text>
+      
+      <!-- اللوحة الخلفية الاحترافية -->
+      <a-plane position="0 0 0" width="1.3" height="0.9" material="color: #0f172a; opacity: 0.92; transparent: true;"></a-plane>
+      <a-plane position="0 0 -0.01" width="1.34" height="0.94" material="color: #38bdf8;"></a-plane>
+      <!-- العنوان الرئيسي -->
+      <a-text value="Interactive Book" position="0 0.32 0.02" align="center" color="#38bdf8" width="3" font="kelsonsans"></a-text>
+      <a-plane position="0 0.25 0.02" width="1.1" height="0.01" material="color: #38bdf8;"></a-plane>
+      <!-- عنوان الخانة الحالية -->
+      <a-text id="ar-label" value="Author" position="0 0.12 0.02" align="center" color="#f59e0b" width="2.8" font="kelsonsans"></a-text>
+      <!-- القيمة المعروضة (المعلومة) -->
+      <a-text id="ar-value" value="Team Project" position="0 -0.05 0.02" align="center" color="#ffffff" width="2.4" font="kelsonsans"></a-text>
+      <!-- زر تفاعلي داخل الـ AR أيضاً -->
+      <a-box id="ar-button" class="clickable" position="0 -0.28 0.05" width="0.9" height="0.14" depth="0.02" material="color: #22c55e;" onclick="nextInfo()">
+<a-text value="NEXT INFO >" position="0 0 0.02" align="center" color="#ffffff" width="2" font="kelsonsans"></a-text>
+      </a-box>
+
     </a-entity>
   </a-scene>
+  <script>
+    // قائمة المعلومات الخاصة بالكتاب
+    const bookData = [
+      { label: "Author", value: "Team Project" },
+      { label: "Pages", value: "150 Pages" },
+      { label: "Chapters", value: "5 Interactive Chapters" },
+      { label: "Summary", value: "Comprehensive WebAR Guide" }
+    ];
+    let currentIndex = 0;
+
+    // دالة التبديل بين المعلومات
+    function nextInfo() {
+      currentIndex = (currentIndex + 1) % bookData.length;
+      
+      const labelEl = document.getElementById('ar-label');
+      const valueEl = document.getElementById('ar-value');
+      const btnEl = document.getElementById('ar-button');
+      // تحديث النصوص
+      labelEl.setAttribute('value', bookData[currentIndex].label);
+      valueEl.setAttribute('value', bookData[currentIndex].value);
+      // تأثير حركة بسيطة للزر في الـ AR عند الضغط
+      btnEl.setAttribute('scale', '0.9 0.9 0.9');
+      setTimeout(() => {
+        btnEl.setAttribute('scale', '1 1 1');
+      }, 150);
+    }
+  </script>
 </body>
 </html>
