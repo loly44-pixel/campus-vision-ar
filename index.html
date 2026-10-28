@@ -1,47 +1,95 @@
-<!-- لوحة البيانات التي تظهر عند النقر -->
-<div id="info-panel">
-    <button id="close-btn" onclick="closeInfo()">إغلاق</button>
-    <h3 id="info-title">قسم الكتاب</h3>
-    <p id="info-desc">تفاصيل الفصل هنا...</p>
-</div>
-
-<!-- مشهد الواقع المعزز، مع التأكد من رفع ملف targets.mind للغلاف الحقيقي -->
-<a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-    
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-    <!-- ربط العناصر بغلاف الكتاب الحقيقي (صورة الهدف) -->
-    <a-entity mindar-image-target="targetIndex: 0">
-        
-        <!-- أيقونة 1: أساسيات بايثون -->
-        <a-plane position="-0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#ffd13b" 
-                 class="clickable" onclick="showInfo('أساسيات بايثون', 'يغطي الجزء الأول مفاهيم البرمجة الأساسية مثل المتغيرات، القوائم، القواميس، والدوال في بايثون.')">
-            <a-text value="الأساسيات" align="center" position="0 0 0.01" scale="0.5 0.5 0.5" color="black"></a-text>
-        </a-plane>
-
-        <!-- أيقونة 2: المشاريع العملية -->
-        <a-plane position="0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#3670a0" 
-                 class="clickable" onclick="showInfo('المشاريع العملية', 'يتضمن الجزء الثاني 3 مشاريع كبيرة: تطوير لعبة، تصور بيانات، وبناء تطبيق ويب.')">
-            <a-text value="المشاريع" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
-        </a-plane>
-
-        <!-- أيقونة 3: روابط الموارد -->
-        <a-plane position="0 -0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#306998" 
-                 class="clickable" onclick="showInfo('موارد إضافية', 'رابط لتحميل الكود المصدر والحلول المقترحة للتمارين الموجودة في الكتاب.')">
-            <a-text value="الموارد" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
-        </a-plane>
-
-    </a-entity>
-</a-scene>
-
-<script>
-    function showInfo(title, desc) {
-        document.getElementById('info-title').innerText = title;
-        document.getElementById('info-desc').innerText = desc;
-        document.getElementById('info-panel').style.display = 'block';
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Crash Course - AR Project</title>
+  <!-- مكتبة A-Frame -->
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <!-- مكتبة MindAR الخاصة بـ A-Frame -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
     }
-
-    function closeInfo() {
-        document.getElementById('info-panel').style.display = 'none';
+    .info-panel {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 15px 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 1000;
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
     }
-</script>
+    .info-panel h3 {
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+    .info-panel p {
+      margin: 0 0 15px 0;
+      color: #666;
+      font-size: 14px;
+    }
+    .close-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<a-assets>
+  <img id="icon-basics" src="https://cdn-icons-png.flaticon.com/512/3073/3073696.png">
+  <img id="icon-projects" src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png">
+  <img id="icon-resources" src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png">
+</a-assets>
+
+<a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+<!-- ربط العناصر بهدف الصورة (Target 0) -->
+<a-entity mindar-image-target="targetIndex: 0">
+  
+  <!-- الأيقونة الأولى: الأساسيات -->
+  <a-image 
+    src="#icon-basics" 
+    position="-0.6 0 0" 
+    height="0.4" 
+    width="0.4" 
+    class="clickable"
+    onclick="showInfo('أساسيات بايثون', 'يتناول هذا القسم المتغيرات، الأنواع البانية، الجمل الشرطية، والدوال الأساسية للغة.')"
+    animation="property: position; to: -0.6 0.1 0; dir: alternate; dur: 1000; loop: true">
+  </a-image>
+
+  <!-- الأيقونة الثانية: المشاريع -->
+  <a-image 
+    src="#icon-projects" 
+    position="0 0 0" 
+    height="0.4" 
+    width="0.4" 
+    class="clickable"
+    onclick="showInfo('مشاريع عملية', 'مشاريع تطبيقية تشمل: لعبة Alien Invasion، وتطوير تطبيق ويب باستخدام Django، وتحليل البيانات.')"
+    animation="property: position; to: 0 0.1 0; dir: alternate; dur: 1200; loop: true">
+  </a-image>
+
+  <!-- الأيقونة الثالثة: الموارد -->
+  <a-image 
+    src="#icon-resources" 
+    position="0.6 0 0" 
+    height="0.4" 
+    width="0.4" 
+    class="clickable"
+    onclick="showInfo('مصادر التعلم', 'روابط ومستودعات الشيفرات البرمجية ومراجع إضافية لمساعدة المطورين المبتدئين.')"
+    animation="property: position; to: 0.6 0.1 0; dir: alternate; dur: 1400; loop: true">
+  </a-image>
+
+</a-entity>
