@@ -1,34 +1,34 @@
 <!-- لوحة البيانات التي تظهر عند النقر -->
 <div id="info-panel">
     <button id="close-btn" onclick="closeInfo()">إغلاق</button>
-    <h3 id="info-title">عنوان القسم</h3>
-    <p id="info-desc">معلومات الكتاب والتفاصيل هنا...</p>
+    <h3 id="info-title">قسم الكتاب</h3>
+    <p id="info-desc">تفاصيل الفصل هنا...</p>
 </div>
 
-<!-- مشهد الواقع المعزز -->
+<!-- مشهد الواقع المعزز، مع التأكد من رفع ملف targets.mind للغلاف الحقيقي -->
 <a-scene mindar-image="imageTargetSrc: targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
     
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <!-- ربط العناصر بغلاف الكتاب (صورة الهدف) -->
+    <!-- ربط العناصر بغلاف الكتاب الحقيقي (صورة الهدف) -->
     <a-entity mindar-image-target="targetIndex: 0">
         
-        <!-- أيقونة 1: ملخص الكتاب -->
-        <a-plane position="-0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#6f42c1" 
-                 class="clickable" onclick="showInfo('ملخص الكتاب', 'يقدم الكتاب مفاهيم أساسية وعميقة حول تقنيات العصر الحديث وتطبيقات الذكاء الاصطناعي.')">
-            <a-text value="الملخص" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
+        <!-- أيقونة 1: أساسيات بايثون -->
+        <a-plane position="-0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#ffd13b" 
+                 class="clickable" onclick="showInfo('أساسيات بايثون', 'يغطي الجزء الأول مفاهيم البرمجة الأساسية مثل المتغيرات، القوائم، القواميس، والدوال في بايثون.')">
+            <a-text value="الأساسيات" align="center" position="0 0 0.01" scale="0.5 0.5 0.5" color="black"></a-text>
         </a-plane>
 
-        <!-- أيقونة 2: معلومات المؤلف -->
-        <a-plane position="0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#20c997" 
-                 class="clickable" onclick="showInfo('المؤلف والكاتب', 'تأليف: نخبة من مطوري ومختصي تقنية المعلومات والذكاء الاصطناعي.')">
-            <a-text value="المؤلف" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
+        <!-- أيقونة 2: المشاريع العملية -->
+        <a-plane position="0.5 0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#3670a0" 
+                 class="clickable" onclick="showInfo('المشاريع العملية', 'يتضمن الجزء الثاني 3 مشاريع كبيرة: تطوير لعبة، تصور بيانات، وبناء تطبيق ويب.')">
+            <a-text value="المشاريع" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
         </a-plane>
 
-        <!-- أيقونة 3: الأقسام والفصول -->
-        <a-plane position="0 -0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#fd7e14" 
-                 class="clickable" onclick="showInfo('فصول الكتاب', 'يحتوي الكتاب على 5 فصول رئيسية تشمل النظريات، الأدوات العملية، والتطبيقات الميدانية.')">
-            <a-text value="الفصول" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
+        <!-- أيقونة 3: روابط الموارد -->
+        <a-plane position="0 -0.5 0" rotation="0 0 0" width="0.4" height="0.4" color="#306998" 
+                 class="clickable" onclick="showInfo('موارد إضافية', 'رابط لتحميل الكود المصدر والحلول المقترحة للتمارين الموجودة في الكتاب.')">
+            <a-text value="الموارد" align="center" position="0 0 0.01" scale="0.5 0.5 0.5"></a-text>
         </a-plane>
 
     </a-entity>
