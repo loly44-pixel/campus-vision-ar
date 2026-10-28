@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Python Crash Course - AR Project</title>
+  <title>AR Experience</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
@@ -13,58 +13,19 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: none; z-index: 1000;
       text-align: center; width: 80%; max-width: 400px;
     }
-    .info-panel h3 { margin: 0 0 10px 0; color: #333; }
-    .info-panel p { margin: 0 0 15px 0; color: #666; font-size: 14px; }
-    .close-btn {
-      background: #e74c3c; color: white; border: none; padding: 8px 20px;
-      border-radius: 6px; cursor: pointer; font-size: 14px;
-    }
   </style>
 </head>
-<body>  <div id="info-panel" class="info-panel">
-    <h3 id="panel-title">قسم الكتاب</h3>
-    <p id="panel-text">تفاصيل الفصل هنا...</p>
-    <button class="close-btn" onclick="closeInfo()">إغلاق</button>
+<body>
+  <div id="info-panel" class="info-panel">
+    <h3 id="panel-title">تم الكشف!</h3>
+    <p id="panel-text">أهلاً بك في تجربة الواقع المعزز.</p>
+    <button onclick="document.getElementById('info-panel').style.display='none'" style="background:#e74c3c;color:white;border:none;padding:8px 20px;border-radius:6px;">إغلاق</button>
   </div>
-  <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/examples/image-tracking/assets/card-example/card.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
-    
-    <a-assets>
-      <img id="icon-basics" src="https://cdn-icons-png.flaticon.com/512/3073/3073696.png">
-      <img id="icon-projects" src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png">
-      <img id="icon-resources" src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png">
-    </a-assets>
+  <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/examples/image-tracking/assets/card-example/card.mind; uiLoading: no;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-image 
-        src="#icon-basics" 
-        position="-0.6 0 0" 
-        height="0.4" width="0.4" 
-        class="clickable"
-        onclick="showInfo('أساسيات بايثون', 'يتناول هذا القسم المتغيرات، الأنواع البانية، الجمل الشرطية، والدوال الأساسية.')"
-        animation="property: position; to: -0.6 0.1 0; dir: alternate; dur: 1000; loop: true">
-      </a-image>
-      <a-image 
-        src="#icon-resources" 
-        position="0.6 0 0" 
-        height="0.4" width="0.4" 
-        class="clickable"
-        onclick="showInfo('مصادر التعلم', 'روابط ومستودعات الشيفرات البرمجية ومراجع إضافية لمساعدة المطورين.')"
-        animation="property: position; to: 0.6 0.1 0; dir: alternate; dur: 1400; loop: true">
-      </a-image>
+    <a-entity mindar-image-target="targetIndex: 0" ontargetfound="document.getElementById('info-panel').style.display='block'">
+      <a-box position="0 0.4 0" material="color: red;" height="0.3" width="0.3" depth="0.3"></a-box>
     </a-entity>
   </a-scene>
-  <script>
-    function showInfo(title, text) {
-      document.getElementById('panel-title').innerText = title;
-      document.getElementById('panel-text').innerText = text;
-      document.getElementById('info-panel').style.display = 'block';
-    }
-    function closeInfo() {
-      document.getElementById('info-panel').style.display = 'none';
-    }
-  </script>
-
 </body>
 </html>
-
-  
