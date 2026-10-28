@@ -4,28 +4,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AR Experience</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <style>
-    body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; }
-    .info-panel {
-      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: white; padding: 15px 25px; border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: none; z-index: 1000;
-      text-align: center; width: 80%; max-width: 400px;
-    }
-  </style>
 </head>
 <body>
-  <div id="info-panel" class="info-panel">
-    <h3 id="panel-title">تم الكشف!</h3>
-    <p id="panel-text">أهلاً بك في تجربة الواقع المعزز.</p>
-    <button onclick="document.getElementById('info-panel').style.display='none'" style="background:#e74c3c;color:white;border:none;padding:8px 20px;border-radius:6px;">إغلاق</button>
-  </div>
-  <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/examples/image-tracking/assets/card-example/card.mind; uiLoading: no;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: true">
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0" ontargetfound="document.getElementById('info-panel').style.display='block'">
-      <a-box position="0 0.4 0" material="color: red;" height="0.3" width="0.3" depth="0.3"></a-box>
-    </a-entity>
+  <a-scene embedded vr-mode-ui="enabled: false">
+    <a-camera position="0 1.6 3"></a-camera>
+    <a-box position="0 1.6 -1" rotation="0 45 45" material="color: red;" scale="0.8 0.8 0.8"></a-box>
+    <a-light type="ambient" color="#FFF"></a-light>
   </a-scene>
 </body>
 </html>
