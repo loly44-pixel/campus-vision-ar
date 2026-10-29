@@ -3,38 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>الكتاب التفاعلي</title>
+  <title>الكتاب التفاعلي - النقاط الدقيقة</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
     body { margin: 0; overflow: hidden; font-family: sans-serif; }
-    #hint { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #38bdf8; padding: 12px 24px; border-radius: 20px; z-index: 999; font-size: 14px; font-weight: bold; }
+    #hint { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.85); color: #38bdf8; padding: 12px 24px; border-radius: 20px; z-index: 999; font-size: 14px; font-weight: bold; text-align: center; }
   </style>
 </head>
 <body>
-  <div id="hint">📱 وجه الكاميرا على صورة البطاقة باللابتوب</div>
+  <div id="hint">🔴 وجه الكاميرا على الكتاب واضغط على النقاط</div>
+
   <a-scene 
-  
-  <a-scene mindar-image="imageTargetSrc: ./targets.mind; uiLoading: no;" color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false">
-    color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false"
+    mindar-image="imageTargetSrc: ./targets.mind; uiLoading: no;" 
+    color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false">
     
-    <a-camera position="0 0 0" look-controls="enabled: false" raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse"></a-camera>
+    <!— كاميرا مهيأة خصيصاً لالتقاط اللمس على الموبايل والكمبيوتر —>
+    <a-camera position="0 0 0" look-controls="enabled: false" raycaster="objects: .clickable; interval: 100" cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+
     <a-entity mindar-image-target="targetIndex: 0">
-      <!-- لوحة عرض البيانات -->
-      <a-plane position="0 0.2 0" width="1.2" height="0.5" material="color: #0f172a; opacity: 0.95;"></a-plane>
-      <a-text id="my-text" value="اضغط الأزرار بالأسفل للتفاصيل" posi      <!-- زر اسم المؤلف -->
-      <a-plane class="clickable" position="0 -0.2 0.02" width="1.1" height="0.16" material="color: #ec4899;" onclick="document.getElementById('my-text').setAttribute('value', 'اسم المؤلف: فريق المشروع التعليمي')">
-        <a-text value="اسم المؤلف" position="0 0 0.02" align="center" color="#ffffff" width="2"></a-text>
-      </a-plane>
-tion="0 0.2 0.02" align="center" color="#ffffff" width="2.4"></a-text>
-      <!-- زر اسم المؤلف -->
-      <a-plane class="clickable" position="0 -0.2 0.02" width="1.1" height="0.16" material="color: #ec4899;" onclick="document.getElementById('my-text').setAttribute('value', 'اسم المؤلف: فريق المشروع التعليمي')">
-        <a-text value="اسم المؤلف" position="0 0 0.02" align="center" color="#ffffff" width="2"></a-text>
-      </a-plane>
-            <!-- زر عدد الصفحات -->
-      <a-plane class="clickable" position="0 -0.4 0.02" width="1.1" height="0.16" material="color: #f59e0b;" onclick="document.getElementById('my-text').setAttribute('value', 'عدد الصفحات: 150 صفحة')">
-        <a-text value="عدد الصفحات" position="0 0 0.02" align="center" color="#ffffff" width="2"></a-text>
-      </a-plane>
+      
+      <!— لوحة عرض المعلومات في الأعلى —>
+      <a-plane position="0 0.5 0" width="1.4" height="0.35" material="color: #0f172a; opacity: 0.95;"></a-plane>
+      <a-text id="info-box" value="اضغط على أي نقطة حمراء لعرض التفاصيل" position="0 0.5 0.02" align="center" color="#ffffff" width="2.2"></a-text>
+
+      <!— النقطة الحمراء الأولى (أعلى الغلاف) —>
+      <a-entity class="clickable" position="-0.3 0.15 0.02" 
+        onclick="document.getElementById('info-box').setAttribute('value', 'معلومات المؤلف: كتاب تعليمي متطور لتبسيط العلوم.')">
+        <a-circle radius="0.07" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.07" radius-outer="0.09" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      </a-entity>
+
+      <!— النقطة الحمراء الثانية (منتصف الغلاف) —>
+      <a-entity class="clickable" position="0 -0.05 0.02" 
+        onclick="document.getElementById('info-box').setAttribute('value', 'الفصول: يحتوي الكتاب على 5 فصول رئيسية شاملة.')">
+        <a-circle radius="0.07" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.07" radius-outer="0.09" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      </a-entity>
+
+      <!— النقطة الحمراء الثالثة (أسفل الغلاف) —>
+      <a-entity class="clickable" position="0.3 -0.25 0.02" 
+        onclick="document.getElementById('info-box').setAttribute('value', 'تفاصيل إضافية: عدد الصفحات الإجمالي 150 صفحة.')">
+        <a-circle radius="0.07" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.07" radius-outer="0.09" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      </a-entity>
+
     </a-entity>
   </a-scene>
 </body>
