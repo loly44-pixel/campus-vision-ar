@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>الكتاب التفاعلي - النقاط الدقيقة</title>
+  <title>الكتاب التفاعلي - النقاط الذكية</title>
   <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   <style>
@@ -12,47 +12,56 @@
   </style>
 </head>
 <body>
-  <div id="hint">🎯 اضغط على النقاط الحمراء الصغيرة للعرض</div>
+  <div id="hint">🎯 اضغط بإصبعك على النقاط الحمراء الصغيرة</div>
   <a-scene 
     mindar-image="imageTargetSrc: ./targets.mind; uiLoading: no;" 
     color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false">
     
-    <!-- كاميرا مجهزة لالتقاط اللمس على الشاشة مباشرة -->
-    <a-camera position="0 0 0" look-controls="enabled: false" raycaster="objects: .clickable" cursor="fuse: false; rayOrigin: mouse;"></a-camera>
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     <a-entity mindar-image-target="targetIndex: 0">
       
       <!-- لوحة عرض النص -->
       <a-plane position="0 0.55 0" width="1.4" height="0.3" material="color: #0f172a; opacity: 0.95;"></a-plane>
       <a-text id="info-box" value="اضغط على أي نقطة حمراء" position="0 0.55 0.02" align="center" color="#ffffff" width="2"></a-text>
       <!-- النقطة الصغيرة الأولى -->
-      <a-entity id="pin1" class="clickable" position="-0.3 0.2 0.02">
-        <a-circle radius="0.04" material="color: #ef4444; shader: flat;"></a-circle>
-        <a-ring radius-inner="0.04" radius-outer="0.055" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      <a-entity id="pin1" position="-0.3 0.2 0.02">
+        <a-circle radius="0.06" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.06" radius-outer="0.08" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
       </a-entity>
       <!-- النقطة الصغيرة الثانية -->
-      <a-entity id="pin2" class="clickable" position="0 -0.05 0.02">
-        <a-circle radius="0.04" material="color: #ef4444; shader: flat;"></a-circle>
-        <a-ring radius-inner="0.04" radius-outer="0.055" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      <a-entity id="pin2" position="0 -0.05 0.02">
+        <a-circle radius="0.06" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.06" radius-outer="0.08" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
       </a-entity>
       <!-- النقطة الصغيرة الثالثة -->
-      <a-entity id="pin3" class="clickable" position="0.3 -0.3 0.02">
-        <a-circle radius="0.04" material="color: #ef4444; shader: flat;"></a-circle>
-        <a-ring radius-inner="0.04" radius-outer="0.055" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
+      <a-entity id="pin3" position="0.3 -0.3 0.02">
+        <a-circle radius="0.06" material="color: #ef4444; shader: flat;"></a-circle>
+        <a-ring radius-inner="0.06" radius-outer="0.08" position="0 0 -0.01" material="color: #ffffff; shader: flat;"></a-ring>
       </a-entity>
     </a-entity>
   </a-scene>
   <script>
-    // كود جافاسكريبت مباشر للتعامل مع اللمس المباشر بدقة
+    // تفعيل الاستجابة المباشرة للضغط عبر الجافاسكريبت المحسّن للموبايل
     const infoBox = document.getElementById('info-box');
-    document.getElementById('pin1').addEventListener('click', function () {
-      infoBox.setAttribute('value', 'معلومات المؤلف: كتاب بايثون الشهير لتعليم البرمجة.');
-    });
-    document.getElementById('pin2').addEventListener('click', function () {
-      infoBox.setAttribute('value', 'مبيعات الكتاب: تجاوزت 1.5 مليون نسخة عالمياً!');
-    });
-    document.getElementById('pin3').addEventListener('click', function () {
-      infoBox.setAttribute('value', 'محتوى الكتاب: دليل شامل للمبتدئين في البرمجة.');
-    });
+    function setupClick(id, message) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('click', () => {
+          infoBox.setAttribute('value', message);
+        });
+        // دعم إضافي لأجهزة اللمس المباشر
+        el.addEventListener('touchstart', (e) => {
+          e.preventDefault();
+          infoBox.setAttribute('value', message);
+        });
+      }
+    }
+    // ربط الرسائل بالنقاط بعد تحميل الصفحة
+    setTimeout(() => {
+setupClick('pin1', 'معلومات المؤلف: كتاب بايثون الشهير لتعليم البرمجة.');
+      setupClick('pin2', 'مبيعات الكتاب: تجاوزت 1.5 مليون نسخة عالمياً!');
+      setupClick('pin3', 'محتوى الكتاب: دليل شامل للمبتدئين في البرمجة.');
+    }, 1000);
   </script>
 </body>
 </html>
